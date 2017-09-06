@@ -1,0 +1,162 @@
+\usepackage{pdfrender}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\orange}[1]{\textcolor{orange}{#1}}
+\newcommand{\green}[1]{\textcolor{markgreen}{#1}}
+\newcommand{\textgreen}[1]{\textcolor{textgreen}{#1}}
+\newcommand{\blue}[1]{\textcolor{textblue}{#1}}
+\newcommand{\gray}[1]{\textcolor{gray}{#1}}
+
+\newcolumntype{R}{>{\centering\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\centering\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\usepackage[style=authortitle-comp,backend=biber]{biblatex}
+\addbibresource{eaa.bib}
+\renewcommand*{\bibfont}{\small}
+
+\setbeamercovered{transparent}
+
+\newcommand{\textsb}[1]{{\fontfamily{cmss}\fontseries{sbc}\fontshape{n}\selectfont #1}}
+
+\setbeamertemplate{enumerate items}[square]
+
+\setbeamertemplate{footline}
+{
+\hbox{%
+  \begin{beamercolorbox}[wd=.26\paperwidth,ht=2.7ex,dp=1.2ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor\ (\insertshortinstitute)
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.40\paperwidth,ht=2.7ex,dp=1.2ex,center]{author in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle:\ \textbf{\insertsection}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.36\paperwidth,ht=2.7ex,dp=1.2ex,center]{author in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate\hfill\insertframenumber/\inserttotalframenumber\strut
+  \end{beamercolorbox}}
+  \vskip0pt%
+}
+
+\tikzset{
+  invisible/.style={opacity=0},
+  visible on/.style={alt={#1{}{invisible}}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+}
+
+\newcommand{\printSectionYes}{\AtBeginSection[]
+{
+ \begin{frame}{Agenda}
+ \tableofcontents[sectionstyle=show/shaded,
+ 					subsectionstyle=show/shaded/hide]
+ \end{frame}
+}}
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}}%
+}}
+
+\setbeamertemplate{section in toc shaded}[default][50]
+
+\setbeamertemplate{subsection in toc shaded}[default][50]
+
+\makeatletter
+\patchcmd{\beamer@sectionintoc}{\vskip1.5em}{\vskip0.5em}{}{}
+\makeatother
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+\setbeamertemplate{bibliography item}{%
+  \ifboolexpr{ test {\ifentrytype{book}} or test {\ifentrytype{mvbook}}
+    or test {\ifentrytype{collection}} or test {\ifentrytype{mvcollection}}
+    or test {\ifentrytype{reference}} or test {\ifentrytype{mvreference}} }
+    {\setbeamertemplate{bibliography item}[book]}
+    {\ifentrytype{online}
+       {\setbeamertemplate{bibliography item}[online]}
+       {\setbeamertemplate{bibliography item}[article]}}%
+  \usebeamertemplate{bibliography item}}
+  
+\defbibenvironment{bibliography}
+  {\list{}
+     {\settowidth{\labelwidth}{\usebeamertemplate{bibliography item}}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+  
+%%% DEFINE DOCUMENT SHAPE
+% taken from manual
+\makeatletter
+\pgfdeclareshape{document}{
+\inheritsavedanchors[from=rectangle] % this is nearly a rectangle
+\inheritanchorborder[from=rectangle]
+\inheritanchor[from=rectangle]{center}
+\inheritanchor[from=rectangle]{north}
+\inheritanchor[from=rectangle]{south}
+\inheritanchor[from=rectangle]{west}
+\inheritanchor[from=rectangle]{east}
+% ... and possibly more
+\backgroundpath{% this is new
+% store lower right in xa/ya and upper right in xb/yb
+\southwest \pgf@xa=\pgf@x \pgf@ya=\pgf@y
+\northeast \pgf@xb=\pgf@x \pgf@yb=\pgf@y
+% compute corner of ‘‘flipped page’’
+\pgf@xc=\pgf@xb \advance\pgf@xc by-5pt % this should be a parameter
+\pgf@yc=\pgf@yb \advance\pgf@yc by-5pt
+% construct main path
+\pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+\pgfpathlineto{\pgfpoint{\pgf@xa}{\pgf@yb}}
+\pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@yb}}
+\pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yc}}
+\pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@ya}}
+\pgfpathclose
+% add little corner
+\pgfpathmoveto{\pgfpoint{\pgf@xc}{\pgf@yb}}
+\pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@yc}}
+\pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yc}}
+\pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@yc}}
+}
+}
+\makeatother
+
+
+%\setbeamertemplate{title page}{%
+%\begin{tikzpicture}[remember picture,overlay]
+%\fill[orange]
+%  ([yshift=15pt]current page.west) rectangle (current page.south east);
+%\node[anchor=east] 
+%  at ([yshift=-50pt]current page.north east) (author)
+%  {\parbox[t]{.6\paperwidth}{\raggedleft%
+%    \usebeamerfont{author}\textcolor{orange}{%
+%    \textpdfrender{
+%    TextRenderingMode=FillStroke,
+%    FillColor=orange,
+%    LineWidth=.1ex,
+%    }{\insertauthor}}}};
+%\node[anchor=north east] 
+%  at ([yshift=-70pt]current page.north east) (institute)
+%  {\parbox[t]{.78\paperwidth}{\raggedleft%
+%    \usebeamerfont{institute}\textcolor{gray}{\insertinstitute}}};
+%\node[anchor=south west] 
+%  at ([yshift=20pt]current page.west) (logo)
+%  {\parbox[t]{.19\paperwidth}{\raggedleft%
+%    \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic}};
+%\node[anchor=east]
+%  at ([yshift=-10pt,xshift=-20pt]current page.east) (title)
+%  {\parbox[t]{\textwidth}{\raggedleft%
+% \usebeamerfont{author}\textcolor{white}{%
+%    \textpdfrender{
+%    TextRenderingMode=FillStroke,
+%    FillColor=white,
+%    LineWidth=.1ex,
+%    }{\inserttitle}}}};
+%\node[anchor=east]
+%  at ([yshift=-60pt,xshift=-20pt]current page.east) (subtitle)
+%  {\parbox[t]{.6\paperwidth}{\raggedleft\usebeamerfont{subtitle}\textcolor{black}{\insertsubtitle}}};
+%\end{tikzpicture}
+%}

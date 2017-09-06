@@ -1,0 +1,350 @@
+\documentclass[xcolor=x11names, aspectratio=169,usenames,dvipsnames]{beamer}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathpazo}
+\usepackage{enumerate}
+\usepackage{array,booktabs}
+\usepackage{tikz}
+\usepackage{mathdots}
+\usepackage{verbatim}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usetikzlibrary{shadows,matrix,backgrounds,patterns,arrows,decorations.markings,shapes,positioning,calc,chains,scopes,fit}
+\usepackage{caption}
+
+\usetheme[titleformat title=regular,titleformat frame=regular,titleformat section=allcaps,numbering=fraction]{metropolis}
+
+\author[F.\ Kußmaul]{\large Felix Kußmaul\inst{1}}
+\title[Mining Paper Catalogues]{\Large Die Rettung von CeramEgypt}
+\subtitle{\normalsize Oder: Was tun, wenn man keine Informatiker einstellen will?}
+\institute[UzK]{\inst{1} Archäologisches Institut, Universität zu Köln}
+\date[\today]{\vspace*{1em}Werkstattgespräche\\[.5em] \today\vspace*{1em}}
+
+\titlegraphic{
+    \tikz[overlay,remember picture]
+        \node[xshift=-5em,yshift=3em,at=(current page.south east), anchor=south east] {
+            \includegraphics[width=0.25\textwidth]{img/archaide.eps}
+        };
+}
+\input{config.tex}
+\definecolor{morange}{HTML}{FF8200}
+\metroset{block=fill}
+ 
+\begin{document}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+\section{Motivation}
+
+\begin{frame}{\texttt{whatis} CeramEgypt}
+ein tolles Projekt
+\end{frame}
+
+\begin{frame}{Why underestimation is bad}
+\begin{center}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/xkcd.png}
+\caption{I can relate to this. [Source: xkcd.com/1831]}
+\end{figure}
+\end{center}
+\end{frame}
+
+\begin{frame}{IE Process Pipeline with UIMA}
+\tikzset{%
+  materia/.style={draw, text centered, minimum height=1.8em, minimum width=5em, font=\footnotesize},
+  etape/.style={materia, fill=blue!20, rounded corners},
+  doc/.style={materia, fill=green!20,shape=document, text width=6em, inner ysep=5pt},
+  lab/.style={anchor=base,text width=5em,font=\bfseries\itshape\scriptsize},
+  back group/.style={fill=yellow!20,rounded corners, draw=black!50, thick, inner ysep=5pt,minimum height=2cm},
+  imp/.style={etape}
+}
+\tikzstyle{myarrows}=[-stealth',line width=.8mm]
+\tikzstyle{doublea}=[stealth'-stealth',line width=.3mm]
+
+\tikzset{%
+  cascaded/.style = {%
+    general shadow = {%
+      etape,
+      shadow scale = 1,
+      shadow xshift = .8ex,
+      shadow yshift = .8ex,
+      draw},
+    general shadow = {%
+      etape,
+      shadow scale = 1,
+      shadow xshift = .4ex,
+      shadow yshift = .4ex,
+      draw},
+    draw}}
+    
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,foreground,main}
+ 
+\begin{figure}
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[node distance=1.5em and 3em, align=center]
+\node[etape] (token) {Stanford};
+\node[etape, right=of token] (lemma) {ClearNLP};
+\node[etape, right=of lemma] (pos) {OpenNLP};
+\node[etape, right=of pos] (ner) {CoreNLP};
+\node[etape, right=of ner] (ie) {UIMA Ruta};
+
+\node[above=of token,lab] (t) {Tokenisation};
+\node[above=of lemma,lab] (l) {Lemmatisation};
+\node[above=of pos,lab] (p) {POS-Tagging};
+\node[above=of ner,lab] (n) {NER};
+\node[above=of ie,lab] (i) {Information Extraction};
+
+\begin{pgfonlayer}{foreground}
+\node[back group] (start) [fit=(token) (t)]{};
+\node[back group] (1) [fit=(lemma) (l)]{};
+\node[back group] (2) [fit=(pos) (p)]{};
+\node[back group] (3) [fit=(ner) (n)]{};
+\node[back group] (end) [fit=(ie) (i)]{};
+\end{pgfonlayer}
+
+\node[doc, above=3.5em of start] (doc) {unstructured document};
+\node[doc, above=3.5em of end,node distance=2em] (struc) {structured data};
+
+\node[etape, cascaded, below=3em of token] (st) {PosMapper};
+\node[etape, cascaded, below=3em of lemma] (sl) {CoreNLP};
+\node[etape, cascaded, below=3em of pos] (sp) {MatePos};
+\node[etape, cascaded, below=3em of ner] (sn) {OpenNLP};
+\node[etape, cascaded, below=3em of ie] (si) {CoreNLP};
+
+\draw[doublea] (token) edge (st);
+\draw[doublea] (lemma) edge (sl);
+\draw[doublea] (ner) edge (sn);
+\draw[doublea] (pos) edge (sp);
+\draw[doublea] (ie) edge (si);
+
+\node[lab,above=0.4em of 3,xshift=-1.6em,align=right,font=\upshape\footnotesize,text width=9em](uima) {UIMA implementation};
+
+\begin{pgfonlayer}{background}
+\node[dashed,back group, fill=orange!20] [fit=(uima) (start) (1) (2) (3)] {};
+\end{pgfonlayer}
+
+\draw[myarrows] (doc) edge (start) (start) edge (1) (1) edge (2) (2) edge (3) (3) edge (end) (end) edge (struc);
+\end{tikzpicture}
+}
+\caption{IE Process Pipeline.}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Adapting the NER}\large
+Most NERs (e.\,g.\ \textbf{Stanford CoreNLP}) only recognise 8 entities types:
+
+\begin{center}\ttfamily
+\begin{tabular}{lp{4em}l}
+PERSON&&DATE\\
+ORGANIZATION&&TIME\\
+LOCATION&&MONEY\\
+PERCENT&&MISC
+\end{tabular}
+\end{center}
+
+So we have to add the \alert{custom entity type \texttt{FORM}}.
+\end{frame}
+
+\begin{frame}{Two approaches for NER}
+\begin{minipage}[t]{0.45\textwidth}
+\textbf{Rule-based approach}
+\begin{itemize}
+\item High precision, but lower recall
+
+$\Rightarrow$ \alert{Many many rules?!}
+\end{itemize}
+\visible<2->{
+\begin{figure}
+\includegraphics[width=\textwidth]{img/eleph.jpg}
+\caption{Excerpt from \cite{eleph}.}
+\end{figure}}
+\end{minipage}\pause\pause\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\textbf{Machine-learning approach}
+\begin{itemize}
+\item Lower precision, but high recall
+\item \alert{Needs to be trained!}
+\end{itemize}%\vspace*{-1em}
+\visible<4>{
+\begin{figure}
+\hspace*{-1em}\includegraphics[width=1.05\textwidth]{img/iepy.png}
+\caption{Manually annotated sentence from \cite{consp} in \texttt{iepy}.}
+\end{figure}
+}
+\end{minipage}
+\end{frame}
+
+\begin{frame}{Temporal Expressions}
+With \textbf{\textit{\textsc{HeidelTime}}} temporal expressions are mapped to TIMEX3 standard
+\begin{center}
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{rcl}
+\texttt{around 140 B.\,C.}&$\longmapsto$&\texttt{APPROX BC0140}\\
+\texttt{Spätes 3.–4.\ Jh.\ n.\,Chr.}&$\longmapsto$&\texttt{END 02};~~ \texttt{03}\\
+\texttt{second quarter first century B.\,C.}&$\longmapsto$&\texttt{XXXX-Q2 BC00}\\
+\texttt{first half third century A.\,D.}&$\longmapsto$&\texttt{XXXX-H1 02}\\
+\end{tabular}
+}
+\end{center}
+
+\textbf{\textsc{HeidelTime}} supports many other languages, e.\,g.\ German, Italian, French, \dots
+\end{frame}
+
+\begin{frame}[fragile]{Relation Extraction}
+\begin{center}
+\begin{tabularx}{\textwidth}{CCC}
+\toprule
+\textbf{Subject}&\textbf{Relation}&\textbf{Object}\\\midrule
+quick brown fox&jump over&lazy dog\\
+K 612&dates&\texttt{03}\footnote{\enquote{4th century A.\,D.}}\\
+Form 23&dates&\texttt{XXXX-Q2 00}\footnote{\enquote{second and third quarters of the first century A.\,D.}}\\
+Subform 23.2&dates&\texttt{XXXX-Q2 00}~~\\
+\bottomrule
+\end{tabularx}\bigskip\pause
+
+\begin{minipage}{0.3\textwidth}\flushright
+\textbf{$\boldsymbol{\Rightarrow}$ e.\,g.}
+\end{minipage}\hfill
+\begin{minipage}{0.65\textwidth}
+{
+\begin{verbatim}
+{  "form":   "23.2",
+   "dating": "XXXX-Q2 00"  }
+\end{verbatim}
+}
+\end{minipage}
+\end{center}
+\end{frame}
+
+%NOTE: supports Pleiades and GeoNames
+
+\begin{frame}{Locations with \textsc{HeidelPlace}}
+\begin{figure}
+\hspace*{-1em}\includegraphics[width=1.025\textwidth]{img/heidelplace.png}
+\caption{Screenshot of \textsc{HeidelPlace}.}
+\end{figure}
+\end{frame}
+
+\section{Multilingualism}
+
+\begin{frame}{Background}
+Two problems:
+\begin{itemize}
+\item Linguistic
+\item Conceptual
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Different languages}
+\begin{center}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/tim_vocab_1.png}
+\end{figure}
+\end{center}
+\end{frame}
+
+\begin{frame}{Different traditions}
+\begin{center}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/tim_plate_platter_dish.jpg}
+\caption{Plate, platter or dish?}
+\end{figure}
+\end{center}
+\end{frame}
+
+\begin{frame}{Creating controlled vocabularies}
+Creating wordlists that project team would be most useful to describe the key features of a vessel or sherd
+\begin{itemize}
+\item Sherd type (e.g. rim or handle)
+\item Form (e.g. plate or bowl)
+\item Decoration form (e.g. burnished)
+\item Decoration color (e.g. yellow)
+\item Fabric (e.g. Dressel 28 fabric)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lessons from ARIADNE}
+\hfill\raisebox{-.9em}{\includegraphics[width=4cm]{img/tim_ariadne_logo.png}}\newline
+Used tools and methodology developed for the ARIADNE project by the Hypermedia Research Group at the University of South Wales \newline
+\begin{itemize}
+\item Created a neutral spine based on the Getty Institute's Art and Architecture Thesaurus (AAT)
+\item This spine was poulated by memebers from partner organisations, identifying common terms and concepts within it
+\item Project partners then mapped terms in their language to this neutral spine
+\item French terms supplied courtesy of a 2001 Masters thesis by Caroline SOURZAT (thanks to Eleni Schindler Kaudelka for identifying this on the ArchAIDE blog!)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mapping terms and concepts (part 1)}
+Often this was very straightforward, for example:
+\begin{itemize}
+\item The Italian terms \emph{graffita, graffita a punta, graffita a stecca} = "sgraffito" (http://vocab.getty.edu/aat/300266416)
+\item The Spanish term \emph{Cántaro} = "jars" (http://vocab.getty.edu/aat/300195348)
+\item The German terms \emph{gebogener Henkel, Ohrförmiger Henkel, langer Vertikalhenkel} = "handles" (http://vocab.getty.edu/aat/300266416)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mapping terms and concepts (part 2)}
+Often this was more complicated, with  partners having differing perceptions on what to call something (e.g. "plate versus platter)\newline
+\newline
+In truth, this confusion may also be reflected by what has come out of the ground!\newline
+\newline
+An advantage of using the AAT (a "SKOS'd" thesaurus), is that ambiguity or difference in nomenclature can be resolved by  a broader term or concept, so for example...
+\end{frame}
+
+\begin{frame}{Mapping terms and concepts (part 3)}
+Looking at the hierarchies for plate and platter in the AAT we can see that both are "dishes (vessels for food)", or even broader "culinary containers". So whole we can retain our original classifications (and this is essential for text mining), we can agree at a fundamental level \emph{what these fundamentally are}
+\begin{center}
+\begin{figure}
+\includegraphics[width=\textwidth]{img/tim_hierarchy_plate.png}
+\caption{AAT Hierarchies for Plate and Platter}
+\end{figure}
+\end{center}
+\end{frame}
+
+\section{Outlook}
+
+\begin{frame}{Challenges to meet}
+challenges:
+
+choice of tools, coreferences in text, eloquence of archaeologists, maybe calculating F-value?
+
+\textsc{HeidelTime}:\vspace{-1em}
+\begin{center}
+second and \textbf{third quarter} of the \textbf{first century A.\,D.}\quad$\longmapsto$\quad\texttt{XXXX-Q3};~~\texttt{00}
+\end{center}
+\end{frame}
+
+\begin{frame}{References}
+
+\printbibliography[heading=none]
+\end{frame}
+
+
+\begin{frame}[plain]
+\vfill\vfill\vfill
+\begin{center}\Large
+Thank you very much for your attention!\\\bigskip
+
+Questions?
+\end{center}\vfill\vfill
+
+\hfill
+\begin{minipage}{0.7\textwidth}\scriptsize
+\begin{flushright}
+This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement \textnumero\ 693548
+\end{flushright}
+\end{minipage}\hspace*{1em}
+\begin{minipage}{0.1\textwidth}
+\includegraphics[width=\textwidth]{img/eu_flag.ps}
+\end{minipage}
+\end{frame}
+
+\maketitle
+
+\end{document}
