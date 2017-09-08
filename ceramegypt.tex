@@ -22,12 +22,12 @@
 \institute[UzK]{\inst{1} Archäologisches Institut, Universität zu Köln}
 \date[\today]{\vspace*{1em}Werkstattgespräche\\[.5em] \today\vspace*{1em}}
 
-\titlegraphic{
-    \tikz[overlay,remember picture]
-        \node[xshift=-5em,yshift=3em,at=(current page.south east), anchor=south east] {
-            \includegraphics[width=0.25\textwidth]{img/archaide.eps}
-        };
-}
+%\titlegraphic{
+%    \tikz[overlay,remember picture]
+%        \node[xshift=-5em,yshift=3em,at=(current page.south east), anchor=south east] {
+%            \includegraphics[width=0.25\textwidth]{img/archaide.eps}
+%        };
+%}
 \input{config.tex}
 \definecolor{morange}{HTML}{FF8200}
 \metroset{block=fill}
@@ -151,35 +151,6 @@ PERCENT&&MISC
 So we have to add the \alert{custom entity type \texttt{FORM}}.
 \end{frame}
 
-\begin{frame}{Two approaches for NER}
-\begin{minipage}[t]{0.45\textwidth}
-\textbf{Rule-based approach}
-\begin{itemize}
-\item High precision, but lower recall
-
-$\Rightarrow$ \alert{Many many rules?!}
-\end{itemize}
-\visible<2->{
-\begin{figure}
-\includegraphics[width=\textwidth]{img/eleph.jpg}
-\caption{Excerpt from \cite{eleph}.}
-\end{figure}}
-\end{minipage}\pause\pause\hfill
-\begin{minipage}[t]{0.45\textwidth}
-\textbf{Machine-learning approach}
-\begin{itemize}
-\item Lower precision, but high recall
-\item \alert{Needs to be trained!}
-\end{itemize}%\vspace*{-1em}
-\visible<4>{
-\begin{figure}
-\hspace*{-1em}\includegraphics[width=1.05\textwidth]{img/iepy.png}
-\caption{Manually annotated sentence from \cite{consp} in \texttt{iepy}.}
-\end{figure}
-}
-\end{minipage}
-\end{frame}
-
 \begin{frame}{Temporal Expressions}
 With \textbf{\textit{\textsc{HeidelTime}}} temporal expressions are mapped to TIMEX3 standard
 \begin{center}
@@ -221,110 +192,6 @@ Subform 23.2&dates&\texttt{XXXX-Q2 00}~~\\
 \end{minipage}
 \end{center}
 \end{frame}
-
-%NOTE: supports Pleiades and GeoNames
-
-\begin{frame}{Locations with \textsc{HeidelPlace}}
-\begin{figure}
-\hspace*{-1em}\includegraphics[width=1.025\textwidth]{img/heidelplace.png}
-\caption{Screenshot of \textsc{HeidelPlace}.}
-\end{figure}
-\end{frame}
-
-\section{Multilingualism}
-
-\begin{frame}{Background}
-Two problems:
-\begin{itemize}
-\item Linguistic
-\item Conceptual
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Different languages}
-\begin{center}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/tim_vocab_1.png}
-\end{figure}
-\end{center}
-\end{frame}
-
-\begin{frame}{Different traditions}
-\begin{center}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/tim_plate_platter_dish.jpg}
-\caption{Plate, platter or dish?}
-\end{figure}
-\end{center}
-\end{frame}
-
-\begin{frame}{Creating controlled vocabularies}
-Creating wordlists that project team would be most useful to describe the key features of a vessel or sherd
-\begin{itemize}
-\item Sherd type (e.g. rim or handle)
-\item Form (e.g. plate or bowl)
-\item Decoration form (e.g. burnished)
-\item Decoration color (e.g. yellow)
-\item Fabric (e.g. Dressel 28 fabric)
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Lessons from ARIADNE}
-\hfill\raisebox{-.9em}{\includegraphics[width=4cm]{img/tim_ariadne_logo.png}}\newline
-Used tools and methodology developed for the ARIADNE project by the Hypermedia Research Group at the University of South Wales \newline
-\begin{itemize}
-\item Created a neutral spine based on the Getty Institute's Art and Architecture Thesaurus (AAT)
-\item This spine was poulated by memebers from partner organisations, identifying common terms and concepts within it
-\item Project partners then mapped terms in their language to this neutral spine
-\item French terms supplied courtesy of a 2001 Masters thesis by Caroline SOURZAT (thanks to Eleni Schindler Kaudelka for identifying this on the ArchAIDE blog!)
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Mapping terms and concepts (part 1)}
-Often this was very straightforward, for example:
-\begin{itemize}
-\item The Italian terms \emph{graffita, graffita a punta, graffita a stecca} = "sgraffito" (http://vocab.getty.edu/aat/300266416)
-\item The Spanish term \emph{Cántaro} = "jars" (http://vocab.getty.edu/aat/300195348)
-\item The German terms \emph{gebogener Henkel, Ohrförmiger Henkel, langer Vertikalhenkel} = "handles" (http://vocab.getty.edu/aat/300266416)
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Mapping terms and concepts (part 2)}
-Often this was more complicated, with  partners having differing perceptions on what to call something (e.g. "plate versus platter)\newline
-\newline
-In truth, this confusion may also be reflected by what has come out of the ground!\newline
-\newline
-An advantage of using the AAT (a "SKOS'd" thesaurus), is that ambiguity or difference in nomenclature can be resolved by  a broader term or concept, so for example...
-\end{frame}
-
-\begin{frame}{Mapping terms and concepts (part 3)}
-Looking at the hierarchies for plate and platter in the AAT we can see that both are "dishes (vessels for food)", or even broader "culinary containers". So whole we can retain our original classifications (and this is essential for text mining), we can agree at a fundamental level \emph{what these fundamentally are}
-\begin{center}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/tim_hierarchy_plate.png}
-\caption{AAT Hierarchies for Plate and Platter}
-\end{figure}
-\end{center}
-\end{frame}
-
-\section{Outlook}
-
-\begin{frame}{Challenges to meet}
-challenges:
-
-choice of tools, coreferences in text, eloquence of archaeologists, maybe calculating F-value?
-
-\textsc{HeidelTime}:\vspace{-1em}
-\begin{center}
-second and \textbf{third quarter} of the \textbf{first century A.\,D.}\quad$\longmapsto$\quad\texttt{XXXX-Q3};~~\texttt{00}
-\end{center}
-\end{frame}
-
-\begin{frame}{References}
-
-\printbibliography[heading=none]
-\end{frame}
-
 
 \begin{frame}[plain]
 \vfill\vfill\vfill
