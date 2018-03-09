@@ -1,5 +1,5 @@
 \documentclass[xcolor=x11names, aspectratio=169,usenames,dvipsnames]{beamer}
-\usepackage[ngerman]{babel}
+\usepackage[british]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -16,10 +16,10 @@
 
 \usetheme[titleformat title=regular,titleformat frame=regular,titleformat section=allcaps,numbering=fraction]{metropolis}
 
-\author[F.\ Kußmaul]{\large Felix Kußmaul\inst{1}}
+\author[Felix Kußmaul]{\large Felix Kußmaul\inst{1}}
 \title[FMSync]{\Large FMSync}
 \subtitle{\normalsize An Open Source Solution for Synchronising Distributed Archaeological Databases in a Centralised Open Access System}
-\institute[UzK]{\inst{1} Archäologisches Institut, Universität zu Köln}
+\institute[Cologne]{\inst{1} Archäologisches Institut, Universität zu Köln}
 \date[\today]{\vspace*{1em}CAA 2018, Tübingen\\[.5em] 21 March 2018\vspace*{1em}}
 
 %\titlegraphic{
@@ -31,6 +31,8 @@
 \input{config.tex}
 \definecolor{morange}{HTML}{FF8200}
 \metroset{block=fill}
+
+\setbeamercolor{background canvas}{bg=white}
  
 \begin{document}
 
@@ -40,17 +42,61 @@
 
 \section{Motivation}
 
-\begin{frame}{\texttt{whatis} CeramEgypt}
-ein tolles Projekt
+\begin{frame}{title}
+Inhalt...
 \end{frame}
 
 \begin{frame}{Why underestimation is bad}
 \begin{center}
-\begin{figure}
-\includegraphics[width=\textwidth]{img/xkcd.png}
-\caption{I can relate to this. [Source: xkcd.com/1831]}
-\end{figure}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{img/xkcd.png}
+		\caption{I can relate to this. [Source: xkcd.com/1831]}
+	\end{figure}
 \end{center}
+\end{frame}
+
+\section{Approach}
+
+\begin{frame}{FMSync: Topology}
+\begin{figure}
+	\includegraphics[height=.8\textheight]{img/topo.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Wait a sec \dots!}\large
+Yo, Felix! 'Tis nuthin nu. What's ya actual contribution?\pause\bigskip
+\normalsize
+
+\begin{quote}
+	\textbf{SymmetricDS} supports [\dots] \alert{Oracle}, \alert{MySQL}, MariaDB, \alert{PostgreSQL}, MS SQL Server (including Azure), IBM DB2 (UDB, iSeries, and zSeries), H2, HSQLDB, Derby, Firebird, Interbase, Informix, Greenplum, SQLite, Sybase ASE, Sybase ASA (SQL Anywhere), Amazon Redshift, \alert{MongoDB}, and VoltDB databases.
+\end{quote}\vspace{-1em}
+\begin{flushright}
+	\texttt{https://www.symmetricds.org/}
+\end{flushright}
+\end{frame}
+
+\begin{frame}{FileMaker Solution}
+\begin{figure}
+\includegraphics[width=\linewidth]{img/order.png}
+\end{figure}\vspace{-2em}
+\begin{itemize}
+\item Proprietary, badly written software
+\item Still totally not worth the price
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Our Solution}
+
+\end{frame}
+
+\section{Implementation}
+
+\begin{frame}{Foreign Key Difficulty}
+\begin{figure}
+	\begin{tikzpicture}
+	
+	\end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}[plain]
