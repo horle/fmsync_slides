@@ -42,17 +42,70 @@
 
 \section{Motivation}
 
-\begin{frame}{title}
-Inhalt...
+\begin{frame}{Before FMSync: Sharing Data}
+\begin{figure}
+	\begin{tikzpicture}
+\only<1-4>{\draw[thick, dashed] (5.75,-3) -- (5.75,3);}
+\only<5->{\draw[thick, dashed] (5.75,-4.7) -- (5.75,2);}
+\node (pc) at (0,0) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
+\node[right of=pc, node distance=3em] (db) {\includegraphics[width=2em]{img/db}};
+\only<2->{
+	\node[right of=pc, node distance=4cm](usb) {\includegraphics[width=3em]{img/usb}};
+	\node[below right of=usb, node distance=1em] (db2) {\includegraphics[width=1em]{img/db}};
+	\draw[arrows=-latex,ultra thick] (db) -- node [above] {\small{copy}} (usb);
+}
+\only<3->{
+	\node[right of=usb, node distance=3.5cm](usb2) {\includegraphics[width=3em]{img/usb}};
+	\node[below right of=usb2, node distance=1em] (db4) {\includegraphics[width=1em]{img/db}};
+	\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=4em]{img/box}} (usb2);
+}
+\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=2cm]{img/pc.jpg}};
+\node[left of=pc2, node distance=3em] (db3) {\includegraphics[width=2em]{img/db2}};
+\only<4->{
+	\node[below left of=db3, node distance=1em] (dbb3) {\includegraphics[width=2em]{img/db}};
+	\draw[arrows=-latex,ultra thick] (usb2) -- node [above] {\small{copy}} (dbb3);
+}
+\only<5->{
+	\node (pcb) at (0,-3.3) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
+	\node[right of=pcb, node distance=3em] (dbb) {\includegraphics[width=2em]{img/db}};
+	\node[below right of=dbb, node distance=1em] (dbb3b) {\includegraphics[width=2em]{img/db2}};
+	\node[right of=pcb, node distance=4cm](usbb) {\includegraphics[width=3em]{img/usb}};
+	\node[below right of=usbb, node distance=1em] (db2b) {\includegraphics[width=1em]{img/db2}};
+	\draw[arrows=-latex,ultra thick] (usbb) -- node [above] {\small{copy}} (dbb3b);
+	\node[right of=usbb, node distance=3.5cm](usb2b) {\includegraphics[width=3em]{img/usb}};
+	\node[below right of=usb2b, node distance=1em] (db4b) {\includegraphics[width=1em]{img/db2}};
+	\draw[arrows=-latex,ultra thick] (usb2b) -- node[above] (boxb) {\includegraphics[width=4em]{img/box}} (usbb);
+	\node[right of=pcb, node distance=11.5cm] (pc2b) {\includegraphics[width=2cm]{img/pc.jpg}};
+	\node[left of=pc2b, node distance=3em] (db3b) {\includegraphics[width=2em]{img/db2}};
+	\node[below left of=db3b, node distance=1em] {\includegraphics[width=2em]{img/db}};
+	\draw[arrows=-latex,ultra thick] (db3b) -- node [above] {\small{copy}} (usb2b);
+}
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 
-\begin{frame}{Why underestimation is bad}
-\begin{center}
-	\begin{figure}
-		\includegraphics[width=\textwidth]{img/xkcd.png}
-		\caption{I can relate to this. [Source: xkcd.com/1831]}
-	\end{figure}
-\end{center}
+\begin{frame}{Before FMSync: Publishing Data}
+\begin{figure}
+	\begin{tikzpicture}
+	\draw[thick, dashed] (5.75,-3) -- (5.75,3);
+	\node (pc) at (0,0) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
+	\node[right of=pc, node distance=3em] (db) {\includegraphics[width=2em]{img/db}};
+	
+		\node[right of=pc, node distance=4cm](usb) {\includegraphics[width=3em]{img/usb}};
+		\node[below right of=usb, node distance=1em] (db2) {\includegraphics[width=1em]{img/db}};
+		\draw[arrows=-latex,ultra thick] (db) -- node [above] {\small{copy}} (usb);
+		
+		\node[right of=usb, node distance=3.5cm](usb2) {\includegraphics[width=3em]{img/usb}};
+		\node[below right of=usb2, node distance=1em] (db4) {\includegraphics[width=1em]{img/db}};
+		\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=4em]{img/box}} (usb2);
+		
+	\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=3cm]{img/serv.pdf}};
+	\draw[arrows=-latex,ultra thick] (usb2) -- (pc2);
+	\only<2->{
+		\node at (pc2) {\includegraphics[height=.7\textheight]{img/no-fucks-given.jpg}};
+	}
+	\end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \section{Approach}
@@ -63,12 +116,21 @@ Inhalt...
 \end{figure}
 \end{frame}
 
+\begin{frame}{Why underestimation is bad}
+\begin{center}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{img/xkcd.png}
+		\caption{I can relate to this. [xkcd.com/1831]}
+	\end{figure}
+\end{center}
+\end{frame}
+
 \begin{frame}{Wait a sec \dots!}\large
-Yo, Felix! 'Tis nuthin nu. What's ya actual contribution?\pause\bigskip
+Yo, Felix! 'Tis nuthin nu.\pause\bigskip
 \normalsize
 
 \begin{quote}
-	\textbf{SymmetricDS} supports [\dots] \alert{Oracle}, \alert{MySQL}, MariaDB, \alert{PostgreSQL}, MS SQL Server (including Azure), IBM DB2 (UDB, iSeries, and zSeries), H2, HSQLDB, Derby, Firebird, Interbase, Informix, Greenplum, SQLite, Sybase ASE, Sybase ASA (SQL Anywhere), Amazon Redshift, \alert{MongoDB}, and VoltDB databases.
+	\textbf{SymmetricDS} supports [\dots] \alert{Oracle}, \alert{MySQL}, MariaDB, \alert{PostgreSQL}, MS SQL Server (including Azure), IBM DB2 (UDB, iSeries, and zSeries), H2, HSQLDB, Derby, Firebird, Interbase, Informix, Greenplum, \alert{SQLite}, Sybase ASE, Sybase ASA (SQL Anywhere), Amazon Redshift, \alert{MongoDB}, and VoltDB databases.
 \end{quote}\vspace{-1em}
 \begin{flushright}
 	\texttt{https://www.symmetricds.org/}
