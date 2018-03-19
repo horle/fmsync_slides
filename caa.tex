@@ -22,12 +22,12 @@
 \institute[Cologne]{\inst{1} Archäologisches Institut, Universität zu Köln}
 \date[\today]{\vspace*{1em}CAA 2018, Tübingen\\[.5em] 21 March 2018\vspace*{1em}}
 
-%\titlegraphic{
-%    \tikz[overlay,remember picture]
-%        \node[xshift=-5em,yshift=3em,at=(current page.south east), anchor=south east] {
-%            \includegraphics[width=0.25\textwidth]{img/archaide.eps}
-%        };
-%}
+\titlegraphic{
+    \tikz[overlay,remember picture]
+        \node[xshift=-17em,yshift=13em,at=(current page.south east), anchor=north west] {
+            \includegraphics[width=0.55\textwidth]{img/uni.eps}
+        };
+}
 \input{config.tex}
 \definecolor{morange}{HTML}{FF8200}
 \metroset{block=fill}
@@ -45,8 +45,8 @@
 \begin{frame}{Before FMSync: Sharing Data}
 \begin{figure}
 	\begin{tikzpicture}
-\only<1-4>{\draw[thick, dashed] (5.75,-3) -- (5.75,3);}
-\only<5->{\draw[thick, dashed] (5.75,-4.7) -- (5.75,2);}
+\only<1-4>{\draw[thick, dashed,gray] (5.75,-3) -- (5.75,3);}
+\only<5->{\draw[thick, dashed,gray] (5.75,-4.7) -- (5.75,2);}
 \node (pc) at (0,0) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
 \node[right of=pc, node distance=3em] (db) {\includegraphics[width=2em]{img/db}};
 \only<2->{
@@ -86,23 +86,30 @@
 
 \begin{frame}{Before FMSync: Publishing Data}
 \begin{figure}
+	\vspace{-2.5em}
 	\begin{tikzpicture}
-	\draw[thick, dashed] (5.75,-3) -- (5.75,3);
+	\draw[thick, dashed,gray] (5.75,-3) -- (5.75,3);
 	\node (pc) at (0,0) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
 	\node[right of=pc, node distance=3em] (db) {\includegraphics[width=2em]{img/db}};
+	\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=3cm]{img/serv.pdf}};
 	
+	\visible<2>{
+		\node at ($(db)!0.5!(pc)$) {\reflectbox{\includegraphics[width=3.5cm]{img/x}}};
+	}
+	
+	\visible<3->{
 		\node[right of=pc, node distance=4cm](usb) {\includegraphics[width=3em]{img/usb}};
 		\node[below right of=usb, node distance=1em] (db2) {\includegraphics[width=1em]{img/db}};
 		\draw[arrows=-latex,ultra thick] (db) -- node [above] {\small{copy}} (usb);
-		
+	
 		\node[right of=usb, node distance=3.5cm](usb2) {\includegraphics[width=3em]{img/usb}};
 		\node[below right of=usb2, node distance=1em] (db4) {\includegraphics[width=1em]{img/db}};
 		\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=4em]{img/box}} (usb2);
-		
-	\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=3cm]{img/serv.pdf}};
-	\draw[arrows=-latex,ultra thick] (usb2) -- (pc2);
-	\only<2->{
-		\node at (pc2) {\includegraphics[height=.7\textheight]{img/no-fucks-given.jpg}};
+		\draw[arrows=-latex,ultra thick] (usb2) -- (pc2);
+	}
+	
+	\visible<4->{
+		\node at (10,0) {\includegraphics[width=5cm]{img/no-fucks-given.jpg}};
 	}
 	\end{tikzpicture}
 \end{figure}
@@ -116,8 +123,10 @@
 \end{figure}
 \end{frame}
 
-\begin{frame}{Wait a sec \dots!}\large
+\begin{frame}{Wait a second!}\large
 Yo, Felix! 'Tis nuthin nu.\pause\bigskip
+
+https://www.fmpromigrator.com/order/index.html
 \normalsize
 
 \begin{quote}
@@ -153,6 +162,14 @@ open source (license!), free, platform independent (java)
 
 \section{Implementation}
 
+\begin{frame}{screenshot}
+Inhalt...
+\end{frame}
+
+\begin{frame}{arachne}
+bisschen zur zentralisierung
+\end{frame}
+
 \begin{frame}{Foreign Key Difficulty}\ttfamily\footnotesize
 \begin{figure}
 	\begin{tikzpicture}[/tikz/ampersand replacement=\&, label distance=.5cm,  every node/.style = {anchor= north west},every label/.style={font=\normalsize\sffamily\bfseries},
@@ -169,10 +186,10 @@ open source (license!), free, platform independent (java)
 			\only<2>{\\
 			|[fill=Green!40]| 3 \& brown\&\dots}\\};
 	
-	\visible<2>{\draw[ultra thick,->,color=OliveGreen] (tl-2-3.south)-- (fl-2-1.north);}	
+	\visible<2>{\draw[ultra thick,->,color=OliveGreen!50!Green] (tl-2-3.south)-- (fl-2-1.north);}	
 	
 	\visible<3->{
-		\draw[thick, dashed] (5.75,-5.5) -- (5.75,0.5);
+		\draw[thick, dashed,gray] (5.75,-5.5) -- (5.75,0.5);
 		\matrix(tr) [table, right=7cm of tl.north west, anchor=north west] {
 			ID \& \dots \& FK\_Fabric \& \dots \\
 			105 \& \dots \& \phantom{FKhl}x\phantom{abri} \& \dots\only<5,6>{\\
@@ -187,20 +204,91 @@ open source (license!), free, platform independent (java)
 			|[fill=Green!40]| 82 \& brown\&\dots}\only<7->{\\
 			|[fill=red!40]| 82 \& brown\&\dots} \\};
 	}
-	\only<4>{\draw[ultra thick,->,color=OliveGreen] (tl-2-4.east)-- node[above]{import} (tr-3-1.west);}
-	\only<5>{\draw[ultra thick,->,color=OliveGreen] (fl-2-3.east)-- node[above]{import} (fr-3-1.west);}
+	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (tl-2-4.east)-- node[above]{import} (tr-3-1.west);}
+	\only<5>{\draw[ultra thick,->,color=OliveGreen!50!Green] (fl-2-3.east)-- node[above]{import} (fr-3-1.west);}
 	\only<8>{\draw[ultra thick,->,color=red] (tr-3-3.north)--(7.75,0)node[above left]{\dots} ;}
 	\end{tikzpicture}
 \end{figure}
 \end{frame}
 
+\begin{frame}{Foreign Key Difficulty: Solution}\ttfamily\scriptsize
+\begin{figure}
+	\begin{tikzpicture}[/tikz/ampersand replacement=\&, every node/.style = {anchor= north west},every label/.style={font=\normalsize\sffamily\bfseries},
+	table/.style={matrix of nodes, nodes in empty cells, column sep=-\pgflinewidth, row sep=-\pgflinewidth, nodes={draw,text depth=.5ex,text height=2ex,minimum width=2.5em}, row 1/.style={font=\bfseries, nodes={fill=lightgray!50,minimum height=1.7em}}}]
+	
+	\matrix(typea) [table, label=left:\rotatebox{90}{Type}] {
+		ID \& \dots \& FKF \& FKP\only<1>{\\
+		5 \& \dots \& 29 \& 8}\only<2->{\\
+		5 \& \dots \&|[fill=violet!40]| 29 \&|[fill=orange!40]| 8} \\};
+		
+	\matrix(fabrica) [table, label=left:\rotatebox{90}{Fabric}, below left=1cm of typea.south] {
+		ID \& \dots \& FKC \only<1>{\\
+		29 \& \dots \& 3 }\only<2->{\\|[fill=violet!40]|
+		29 \& \dots \&|[fill=NavyBlue!40]| 3}\\};
+		
+	\matrix(placea) [table, label=left:\rotatebox{90}{Place}, right=5em of fabrica.north east,anchor=north west] {
+		ID \& \dots \only<1>{\\
+		8 \& \dots}\only<2->{\\|[fill=orange!40]|
+		8 \& \dots}\\};
+	
+	\matrix(colora) [table, label=left:\rotatebox{90}{Color}, below right=1cm of fabrica.south west] {
+		ID \& color\&\dots\only<1>{\\
+		3 \& brown\&\dots}\only<2->{\\|[fill=NavyBlue!40]| 
+		3 \& brown\&\dots}\\};
+	
+	\visible<3->{
+		\draw[thick, dashed, gray] (5,-5.5) -- (5,0.5);
+		\visible<4->{
+			\matrix(colorb) [table, label=left:\rotatebox{90}{Color}, right=5cm of colora] {
+				ID \& color\&\dots\only<8-12>{\\
+				19 \& brown\&\dots}\only<4>{\\|[fill=Green!40]| 
+				19 \& brown\&\dots}\only<5-7,13>{\\|[fill=NavyBlue!40]| 
+				19 \& brown\&\dots}\\};
+		}
+		\visible<6->{
+			\matrix(fabricb) [table, label=left:\rotatebox{90}{Fabric}, above left=1cm of colorb, anchor=south west] {
+				ID \& \dots \& FKC\only<6>{\\|[fill=Green!40]|
+				45 \& \dots \& 19}\only<8-12>{\\|[fill=violet!40]|
+				45 \& \dots \& 19}\only<7,13>{\\|[fill=violet!40]|
+				45 \& \dots \&|[fill=NavyBlue!40]| 19}\\};
+		}
+		\visible<9->{
+			\matrix(placeb) [table, label=left:\rotatebox{90}{Place}, right=5em of fabricb.north east,anchor=north west] {
+				ID \& \dots\only<9>{\\|[fill=Green!40]|
+				67 \& \dots}\only<10-13>{\\|[fill=orange!40]|
+				67 \& \dots}\\};
+		}
+		\visible<11->{
+			\matrix(typeb) [table, label=left:\rotatebox{90}{Type}, above right=1cm of fabricb, anchor=south] {
+				ID \& \dots \& FKF \& FKP\only<11>{\\|[fill=Green!40]|
+				98 \& \dots \& 45 \& 67}\only<12->{\\
+				98 \& \dots \&|[fill=violet!40]| 45 \&|[fill=orange!40]| 67} \\};
+		}
+	}
+	
+	\only<2->{
+		\draw[ultra thick,->,color=violet] (typea-2-3.south)-- (fabrica-2-1.north);
+		\draw[ultra thick,->,color=orange] (typea-2-4.south)-- (placea-2-1.north);
+		\draw[ultra thick,->,color=NavyBlue] (fabrica-2-3.south)-- (colora-2-1.north);
+	}
+	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (colora-2-3.east)-- node[above]{import} (colorb-2-1.west);}
+	\only<6>{\draw[ultra thick,->,color=OliveGreen!50!Green,bend right=25] (fabrica-2-3.south east) to node[above]{import} node[below,color=NavyBlue]{\textbf{FKC=19}} (fabricb-2-1.south west);}
+	\only<7,13>{\draw[ultra thick,->,color=NavyBlue](fabricb-2-3.south) -- (colorb-2-1.north);}
+	\only<9>{\draw[ultra thick,->,color=OliveGreen!50!Green,bend right=20] (placea-2-2.south east) to node[above]{import} (placeb-2-1.south west);}
+	\only<11>{\draw[ultra thick,->,color=OliveGreen!50!Green] (typea-2-4.east) to node[above]{import} node[below]{\textbf{\textcolor{violet}{FKF=45}}\quad\textbf{\textcolor{orange}{FKP=67}}}  (typeb-2-1.west);}
+	\only<12->{\draw[ultra thick,->,color=violet](typeb-2-3.south) -- (fabricb-2-1.north);}
+	\only<12->{\draw[ultra thick,->,color=orange](typeb-2-4.south) -- (placeb-2-1.north);}
+	\end{tikzpicture}
+\end{figure}
+\end{frame}
+
 \begin{frame}[plain,standout]
-\vfill\vfill\vfill
+\vfill
 \begin{center}\Large
 Thank you very much for your attention!\\\bigskip
-
+https://github.com/horle/fmsync
 Questions?
-\end{center}\vfill\vfill
+\end{center}\vfill
 \end{frame}
 
 \maketitle
