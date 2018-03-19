@@ -42,12 +42,24 @@
 
 \section{Motivation}
 
+\begin{frame}{Status Quo}\large
+\textbf{FileMaker Pro} is widespread across archaeological projects, e.\,g.:
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{img/fm.png}	
+\end{figure}]
+\end{frame}
+
 \begin{frame}{Before FMSync: Sharing Data}
 \begin{figure}
 	\begin{tikzpicture}
 \only<1-4>{\draw[thick, dashed,gray] (5.75,-3) -- (5.75,3);}
 \only<5->{\draw[thick, dashed,gray] (5.75,-4.7) -- (5.75,2);}
 \node (pc) at (0,0) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
+\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=2cm]{img/pc.jpg}};
+\node[left of=pc2, node distance=3em] (db3) {\includegraphics[width=2em]{img/db2}};
+\node[below of=pc, node distance=4em] {\large FileMaker $A$};
+\node[below of=pc2, node distance=4em] {\large FileMaker $B$};
 \node[right of=pc, node distance=3em] (db) {\includegraphics[width=2em]{img/db}};
 \only<2->{
 	\node[right of=pc, node distance=4cm](usb) {\includegraphics[width=3em]{img/usb}};
@@ -57,28 +69,23 @@
 \only<3->{
 	\node[right of=usb, node distance=3.5cm](usb2) {\includegraphics[width=3em]{img/usb}};
 	\node[below right of=usb2, node distance=1em] (db4) {\includegraphics[width=1em]{img/db}};
-	\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=4em]{img/box}} (usb2);
+	\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=3em]{img/box}} (usb2);
 }
-\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=2cm]{img/pc.jpg}};
-\node[left of=pc2, node distance=3em] (db3) {\includegraphics[width=2em]{img/db2}};
 \only<4->{
 	\node[below left of=db3, node distance=1em] (dbb3) {\includegraphics[width=2em]{img/db}};
 	\draw[arrows=-latex,ultra thick] (usb2) -- node [above] {\small{copy}} (dbb3);
 }
 \only<5->{
-	\node (pcb) at (0,-3.3) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
-	\node[right of=pcb, node distance=3em] (dbb) {\includegraphics[width=2em]{img/db}};
-	\node[below right of=dbb, node distance=1em] (dbb3b) {\includegraphics[width=2em]{img/db2}};
-	\node[right of=pcb, node distance=4cm](usbb) {\includegraphics[width=3em]{img/usb}};
+	\node[below of=usb, node distance=3cm](usbb) {\includegraphics[width=3em]{img/usb}};
 	\node[below right of=usbb, node distance=1em] (db2b) {\includegraphics[width=1em]{img/db2}};
-	\draw[arrows=-latex,ultra thick] (usbb) -- node [above] {\small{copy}} (dbb3b);
+	\node[below right of=db, node distance=1em] (db3b) {\includegraphics[width=2em]{img/db2}};
+	\draw[arrows=-latex,ultra thick] (usbb) -- node [below left] {\small{copy}} (db3b);
 	\node[right of=usbb, node distance=3.5cm](usb2b) {\includegraphics[width=3em]{img/usb}};
 	\node[below right of=usb2b, node distance=1em] (db4b) {\includegraphics[width=1em]{img/db2}};
-	\draw[arrows=-latex,ultra thick] (usb2b) -- node[above] (boxb) {\includegraphics[width=4em]{img/box}} (usbb);
-	\node[right of=pcb, node distance=11.5cm] (pc2b) {\includegraphics[width=2cm]{img/pc.jpg}};
-	\node[left of=pc2b, node distance=3em] (db3b) {\includegraphics[width=2em]{img/db2}};
-	\node[below left of=db3b, node distance=1em] {\includegraphics[width=2em]{img/db}};
-	\draw[arrows=-latex,ultra thick] (db3b) -- node [above] {\small{copy}} (usb2b);
+	\draw[arrows=-latex,ultra thick] (usb2b) -- node[above] (boxb) {\includegraphics[width=3em]{img/box}} (usbb);
+%	\node[right of=pcb, node distance=11.5cm] (pc2b) {\includegraphics[width=2cm]{img/pc.jpg}};
+%	\node[below left of=db3b, node distance=1em] {\includegraphics[width=2em]{img/db}};
+	\draw[arrows=-latex,ultra thick] (dbb3) -- node [below right] {\small{copy}} (usb2b);
 }
 \end{tikzpicture}
 \end{figure}
@@ -90,8 +97,10 @@
 	\begin{tikzpicture}
 	\draw[thick, dashed,gray] (5.75,-3) -- (5.75,3);
 	\node (pc) at (0,0) {\reflectbox{\includegraphics[width=2cm]{img/pc.jpg}}};
+	\node[below of=pc, node distance=4em] {\large FileMaker};
 	\node[right of=pc, node distance=3em] (db) {\includegraphics[width=2em]{img/db}};
-	\node[right of=pc, node distance=11.5cm] (pc2) {\includegraphics[width=3cm]{img/serv.pdf}};
+	\node[right of=pc, node distance=11cm] (pc2) {\includegraphics[width=3cm]{img/serv.pdf}};
+	\node[below of=pc2, node distance=4em] {\large MySQL / Oracle / \dots};
 	
 	\visible<2>{
 		\node at ($(db)!0.5!(pc)$) {\reflectbox{\includegraphics[width=3.5cm]{img/x}}};
@@ -104,7 +113,7 @@
 	
 		\node[right of=usb, node distance=3.5cm](usb2) {\includegraphics[width=3em]{img/usb}};
 		\node[below right of=usb2, node distance=1em] (db4) {\includegraphics[width=1em]{img/db}};
-		\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=4em]{img/box}} (usb2);
+		\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=3em]{img/box}} (usb2);
 		\draw[arrows=-latex,ultra thick] (usb2) -- (pc2);
 	}
 	
@@ -126,7 +135,6 @@
 \begin{frame}{Wait a second!}\large
 Yo, Felix! 'Tis nuthin nu.\pause\bigskip
 
-https://www.fmpromigrator.com/order/index.html
 \normalsize
 
 \begin{quote}
@@ -147,8 +155,17 @@ https://www.fmpromigrator.com/order/index.html
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Our Solution}
-open source (license!), free, platform independent (java)
+\begin{frame}{Our Solution}\large
+\dots\ is better than the existing ones, since
+
+\begin{itemize}[<+->]
+	\item it is \alert{open source} (GPL 3 license)
+	\item it is free
+	\item it allows \alert{open access} scenarios
+	\item it is Java-based, thus \alert{platform-independent} and flexible
+	\item it is user-friendly
+	\item it allows to already \textbf{\alert{keep data in sync} while collecting}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Why underestimation is bad}
@@ -166,8 +183,8 @@ open source (license!), free, platform independent (java)
 Inhalt...
 \end{frame}
 
-\begin{frame}{arachne}
-bisschen zur zentralisierung
+\begin{frame}{sync!!}
+bisschen zur sync
 \end{frame}
 
 \begin{frame}{Foreign Key Difficulty}\ttfamily\footnotesize
