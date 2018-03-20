@@ -5,11 +5,13 @@
 \usepackage{amsfonts}
 \usepackage{mathpazo}
 \usepackage{enumerate}
+\usepackage{setspace}
 \usepackage{array,booktabs}
 \usepackage{tikz}
 \usepackage{mathdots}
 \usepackage{verbatim}
 \usepackage{multirow}
+\usepackage{appendixnumberbeamer}
 \usepackage{tabularx}
 \usetikzlibrary{overlay-beamer-styles,shadows,matrix,backgrounds,patterns,arrows,decorations.markings,shapes,positioning,calc,chains,scopes,fit}
 \usepackage{caption}
@@ -19,7 +21,7 @@
 \author[Felix Kußmaul]{\large Felix Kußmaul\inst{1}}
 \title[FMSync]{\Large FMSync}
 \subtitle{\normalsize An Open Source Solution for Synchronising Distributed Archaeological Databases in a Centralised Open Access System}
-\institute[Cologne]{\inst{1} Archäologisches Institut, Universität zu Köln}
+\institute[Cologne]{\inst{1} Archaeological Institute, University of Cologne}
 \date[\today]{\vspace*{1em}CAA 2018, Tübingen\\[.5em] 21 March 2018\vspace*{1em}}
 
 \titlegraphic{
@@ -43,14 +45,19 @@
 \section{Motivation}
 
 \begin{frame}{Status Quo}\large
-\textbf{FileMaker Pro} is widespread across archaeological projects, e.\,g.:
+\textbf{FileMaker} is widespread across archaeological projects. \alert{\textbf{Problems:}}
+\begin{enumerate}[<+->]
+\item FileMaker products have \textbf{expensive license} concepts (Apple)\pause
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{img/fm.png}	
-\end{figure}]
+$\Rightarrow$ everyone just uses the \textbf{offline} license FM Pro
+\item FM Pro does not include mechanisms for sharing or publishing data\pause
+
+$\Rightarrow$ everyone has \textbf{independent} database instances
+\item Independent FM Pro databases cannot simply be merged
+\end{enumerate}
 \end{frame}
 
-\begin{frame}{Before FMSync: Sharing Data}
+\begin{frame}{FileMaker Pro: Sharing Data}
 \begin{figure}
 	\begin{tikzpicture}
 \only<1-4>{\draw[thick, dashed,gray] (5.75,-3) -- (5.75,3);}
@@ -91,7 +98,7 @@
 \end{figure}
 \end{frame}
 
-\begin{frame}{Before FMSync: Publishing Data}
+\begin{frame}{FileMaker Pro: Publishing Data}
 \begin{figure}
 	\vspace{-2.5em}
 	\begin{tikzpicture}
@@ -114,7 +121,7 @@
 		\node[right of=usb, node distance=3.5cm](usb2) {\includegraphics[width=3em]{img/usb}};
 		\node[below right of=usb2, node distance=1em] (db4) {\includegraphics[width=1em]{img/db}};
 		\draw[arrows=-latex,ultra thick] (usb) -- node[above] (box) {\includegraphics[width=3em]{img/box}} (usb2);
-		\draw[arrows=-latex,ultra thick] (usb2) -- (pc2);
+%		\draw[arrows=-latex,ultra thick] (usb2) -- (pc2);
 	}
 	
 	\visible<4->{
@@ -168,15 +175,6 @@ Yo, Felix! 'Tis nuthin nu.\pause\bigskip
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Why underestimation is bad}
-\begin{center}
-\begin{figure}
-	\includegraphics[width=\textwidth]{img/xkcd.png}
-	\caption{I can relate to this. [xkcd.com/1831]}
-\end{figure}
-\end{center}
-\end{frame}
-
 \section{Implementation}
 
 \begin{frame}{Main Window}
@@ -189,10 +187,6 @@ Yo, Felix! 'Tis nuthin nu.\pause\bigskip
 \begin{figure}
 	\includegraphics[width=\linewidth]{img/diff}
 \end{figure}
-\end{frame}
-
-\begin{frame}{sync!!}
-bisschen zur syncmainmain
 \end{frame}
 
 \begin{frame}{Foreign Key Difficulty}\ttfamily\footnotesize
@@ -229,14 +223,14 @@ bisschen zur syncmainmain
 			|[fill=Green!40]| 82 \& brown\&\dots}\only<7->{\\
 			|[fill=red!40]| 82 \& brown\&\dots} \\};
 	}
-	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (tl-2-4.east)-- node[above]{import} (tr-3-1.west);}
-	\only<5>{\draw[ultra thick,->,color=OliveGreen!50!Green] (fl-2-3.east)-- node[above]{import} (fr-3-1.west);}
+	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (tl-2-4.east)-- node[above]{insert} (tr-3-1.west);}
+	\only<5>{\draw[ultra thick,->,color=OliveGreen!50!Green] (fl-2-3.east)-- node[above]{insert} (fr-3-1.west);}
 	\only<8>{\draw[ultra thick,->,color=red] (tr-3-3.south)--($(fr-1-1.north)+(0,0.5)$) node[below]{\dots} ;}
 	\end{tikzpicture}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Foreign Key Difficulty: Solution}\ttfamily\scriptsize
+\begin{frame}{Solution Example}\ttfamily\scriptsize
 \begin{figure}
 	\begin{tikzpicture}[/tikz/ampersand replacement=\&, every node/.style = {anchor= north west},every label/.style={font=\normalsize\sffamily\bfseries},
 	table/.style={matrix of nodes, nodes in empty cells, column sep=-\pgflinewidth, row sep=-\pgflinewidth, nodes={draw,text depth=.5ex,text height=2ex,minimum width=2.5em}, row 1/.style={font=\bfseries, nodes={fill=lightgray!50,minimum height=1.7em}}}]
@@ -296,26 +290,55 @@ bisschen zur syncmainmain
 		\draw[ultra thick,->,color=orange] (typea-2-4.south)-- (placea-2-1.north);
 		\draw[ultra thick,->,color=NavyBlue] (fabrica-2-3.south)-- (colora-2-1.north);
 	}
-	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (colora-2-3.east)-- node[above]{import} (colorb-2-1.west);}
-	\only<6>{\draw[ultra thick,->,color=OliveGreen!50!Green,bend right=25] (fabrica-2-3.south east) to node[above]{import} node[below,color=NavyBlue]{\textbf{FKC=19}} (fabricb-2-1.south west);}
+	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (colora-2-3.east)-- node[above]{insert} (colorb-2-1.west);}
+	\only<6>{\draw[ultra thick,->,color=OliveGreen!50!Green,bend right=25] (fabrica-2-3.south east) to node[above]{insert} node[below,color=NavyBlue]{\textbf{FKC=19}} (fabricb-2-1.south west);}
 	\only<7,13>{\draw[ultra thick,->,color=NavyBlue](fabricb-2-3.south) -- (colorb-2-1.north);}
-	\only<9>{\draw[ultra thick,->,color=OliveGreen!50!Green,bend right=20] (placea-2-2.south east) to node[above]{import} (placeb-2-1.south west);}
-	\only<11>{\draw[ultra thick,->,color=OliveGreen!50!Green] (typea-2-4.east) to node[above]{import} node[below]{\textbf{\textcolor{violet}{FKF=45}}\quad\textbf{\textcolor{orange}{FKP=67}}}  (typeb-2-1.west);}
+	\only<9>{\draw[ultra thick,->,color=OliveGreen!50!Green,bend right=20] (placea-2-2.south east) to node[above]{insert} (placeb-2-1.south west);}
+	\only<11>{\draw[ultra thick,->,color=OliveGreen!50!Green] (typea-2-4.east) to node[above]{insert} node[below]{\textbf{\textcolor{violet}{FKF=45}}\quad\textbf{\textcolor{orange}{FKP=67}}}  (typeb-2-1.west);}
 	\only<12->{\draw[ultra thick,->,color=violet](typeb-2-3.south) -- (fabricb-2-1.north);}
 	\only<12->{\draw[ultra thick,->,color=orange](typeb-2-4.south) -- (placeb-2-1.north);}
 	\end{tikzpicture}
 \end{figure}
 \end{frame}
 
+\begin{frame}{Outlook}\large
+\begin{center}\LARGE
+\includegraphics[width=1em]{img/github}\  \texttt{horle/fmsync}
+\end{center}
+
+FMSync is in an \textbf{early alpha} state.\pause
+
+\begin{itemize}[<+->]
+\item Foreign key handling is \emph{not} implemented \emph{yet}
+\item Currently designed for CeramEgypt and Arachne, needs generalisation!
+\item Many things to optimise, e.\,g.\ UI behaviour
+\end{itemize}
+\end{frame}
+
 \begin{frame}[plain,standout]
 \vfill
 \begin{center}\Large
 Thank you very much for your attention!\\\bigskip
-https://github.com/horle/fmsync
+
 Questions?
 \end{center}\vfill
 \end{frame}
 
 \maketitle
+
+\appendix
+
+\begin{frame}{Foreign Key Difficulty: Solution (simplified)}\large\ttfamily
+\begin{spacing}{1.5}
+\begin{tabbing}
+\textbf{For each} new row:\\
+\qquad\= \textbf{If} row contains \alert{further FK's}, then \textbf{for each} FK:\\
+\>\qquad\= Jump into referenced table, start over;\\
+\> \textbf{Else:}\\
+\>\> Check for duplicates in target DB and \alert{insert row};\\
+\>\> \alert{Replace returned ID in parent row's FK field};
+\end{tabbing}
+\end{spacing}
+\end{frame}
 
 \end{document}
