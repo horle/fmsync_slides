@@ -179,12 +179,20 @@ Yo, Felix! 'Tis nuthin nu.\pause\bigskip
 
 \section{Implementation}
 
-\begin{frame}{screenshot}
-Inhalt...
+\begin{frame}{Main Window}
+\begin{figure}
+	\includegraphics[width=\linewidth]{img/main}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Detail Window}
+\begin{figure}
+	\includegraphics[width=\linewidth]{img/diff}
+\end{figure}
 \end{frame}
 
 \begin{frame}{sync!!}
-bisschen zur sync
+bisschen zur syncmainmain
 \end{frame}
 
 \begin{frame}{Foreign Key Difficulty}\ttfamily\footnotesize
@@ -223,7 +231,7 @@ bisschen zur sync
 	}
 	\only<4>{\draw[ultra thick,->,color=OliveGreen!50!Green] (tl-2-4.east)-- node[above]{import} (tr-3-1.west);}
 	\only<5>{\draw[ultra thick,->,color=OliveGreen!50!Green] (fl-2-3.east)-- node[above]{import} (fr-3-1.west);}
-	\only<8>{\draw[ultra thick,->,color=red] (tr-3-3.north)--(7.75,0)node[above left]{\dots} ;}
+	\only<8>{\draw[ultra thick,->,color=red] (tr-3-3.south)--($(fr-1-1.north)+(0,0.5)$) node[below]{\dots} ;}
 	\end{tikzpicture}
 \end{figure}
 \end{frame}
